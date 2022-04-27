@@ -1,0 +1,26 @@
+:root {
+    font-size: 16px;
+    --darkblue: #164e63;
+    --lightblue: #ecfeff;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background-color: var(--lightblue);
+}
+
+header {
+    background-color: var(--darkblue);
+    padding: 8px;
+    display: flex;
+    justify-content: center;
+    color: white;
+}
+
+h1 {
+    font-size: 2.6rem;
+}
