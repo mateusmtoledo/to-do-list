@@ -11,7 +11,9 @@ const header = (function() {
 
 const content = (function() {
     const main = document.createElement('main');
-
+    const content = document.createElement('div');
+    content.classList.add('content');
+    main.append(content);
     return main;
 })();
 

@@ -1,7 +1,7 @@
 :root {
     font-size: 16px;
     --darkblue: #164e63;
-    --lightblue: #ecfeff;
+    --lightblue: #f4f4f4;
 }
 
 * {
@@ -11,6 +11,9 @@
 
 body {
     background-color: var(--lightblue);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 header {
@@ -19,8 +22,26 @@ header {
     display: flex;
     justify-content: center;
     color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
 h1 {
     font-size: 2.6rem;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: inherit;
+    align-items: center;
+    justify-content: center;
+}
+
+.content {
+    background-color: white;
+    padding: 8px;
+    width: 800px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    flex: 1;
 }
