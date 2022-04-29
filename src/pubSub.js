@@ -1,4 +1,4 @@
-export const pubSub = (function () {
+const pubSub = (function () {
     const events = {};
     function subscribe(eventName, f) {
         if (!events[eventName]) events[eventName] = [f];
@@ -16,3 +16,5 @@ export const pubSub = (function () {
     }
     return {subscribe, unsubscribe, publish};
 })();
+
+export default pubSub;

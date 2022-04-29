@@ -1,3 +1,4 @@
 import './style.css';
-import pageLoad from './domStuff.js';
 import domStuff from './domStuff.js';
+import pubSub from './pubSub.js';
+import listLogic from './listLogic.js';

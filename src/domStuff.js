@@ -1,4 +1,6 @@
-const pageLoad = (function() {
+import pubSub from './pubSub.js';
+
+const page = (function() {
     const header = (function() {
         const header = document.createElement('header');
     
@@ -95,6 +97,7 @@ const pageLoad = (function() {
         const newProjectButton = document.createElement('button');
         newProjectButton.setAttribute('type', 'button');
         newProjectButton.classList.add('new-project-button');
+        newProjectButton.setAttribute('data-active', '1');
         newProjectButton.textContent = 'New Project';
         newProjectButtonContainer.append(newProjectButton);
     
@@ -108,29 +111,74 @@ const pageLoad = (function() {
 const domStuff = (function() {
     const projectsDiv = document.querySelector('.projects');
     const projects = [];
+    const newProjectButton = document.querySelector('.new-project-button');
+    function toggleNewProjectButton() {
+        if(newProjectButton.getAttribute('data-active') === '1') {
+            newProjectButton.removeEventListener('click', addBlankProject);
+            newProjectButton.setAttribute('data-active', '0');
+        }
+        else {
+            newProjectButton.addEventListener('click', addBlankProject);
+            newProjectButton.setAttribute('data-active', '1');
+        }
+    }
     function addBlankProject() {
+        toggleNewProjectButton();
+        (function newBlankProject() {
+            let project = document.createElement('li');
+            project.classList.add('project');
+            const header = document.createElement('div');
+            header.classList.add('header');
+            const title = document.createElement('input');
+            title.setAttribute('type', 'text');
+            title.setAttribute('placeholder', 'New project');
+            const buttons = document.createElement('div');
+            buttons.classList.add('buttons');
+            const confirm = document.createElement('button');
+            confirm.textContent = 'Confirm';
+            confirm.setAttribute('type', 'button');
+            const cancel = document.createElement('button');
+            cancel.textContent = 'Cancel';
+            cancel.setAttribute('type', 'button');
+            buttons.append(confirm, cancel);
+            header.append(title, buttons);
+            project.append(header);
+            projectsDiv.append(project);
+            confirm.addEventListener('click', () => {
+                project.remove();
+                toggleNewProjectButton();
+                if(!title.value) return;
+                pubSub.publish('projectAdded', title.value);
+            });
+            cancel.addEventListener('click', () => {
+                project.remove();
+                toggleNewProjectButton();
+            });
+        })();
+    }
+    function addProject(name) {
         let index = projects.length;
         projects[index] = document.createElement('li');
         projects[index].classList.add('project');
         const header = document.createElement('div');
         header.classList.add('header');
-        const title = document.createElement('input');
-        title.setAttribute('type', 'text');
-        title.textContent = 'New Project';
+        const title = document.createElement('h2');
+        title.textContent = name;
         const buttons = document.createElement('div');
         buttons.classList.add('buttons');
-        const confirm = document.createElement('button');
-        confirm.textContent = 'Confirm';
-        confirm.setAttribute('type', 'button');
-        const cancel = document.createElement('button');
-        cancel.textContent = 'Cancel';
-        cancel.setAttribute('type', 'button');
-        buttons.append(confirm, cancel);
+        const newTask = document.createElement('button');
+        newTask.textContent = 'New Task';
+        newTask.setAttribute('type', 'button');
+        const del = document.createElement('button');
+        del.textContent = 'Delete';
+        del.setAttribute('type', 'button');
+        buttons.append(newTask, del);
         header.append(title, buttons);
         projects[index].append(header);
         projectsDiv.append(projects[index]);
     }
-    pageLoad.newProjectButton.addEventListener('click', addBlankProject);
+    pubSub.subscribe('projectAdded', (name) => addProject(name));
+    newProjectButton.addEventListener('click', addBlankProject);
 })();
 
-export default pageLoad;
+export default domStuff;

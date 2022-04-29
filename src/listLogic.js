@@ -1,13 +1,9 @@
+import pubSub from './pubSub.js';
+
 class Project {
     constructor(name) {
         this.name = name;
         this.taskList = [];
-    }
-    get name() {
-        return this.name;
-    }
-    get taskList() {
-        return this.taskList;
     }
     addTask(task) {
         this.taskList.push(task);
@@ -27,3 +23,13 @@ class Task {
         else this.completed = true;
     }
 }
+
+const listLogic = (function () {
+    const projects = [];
+    pubSub.subscribe('projectAdded', (name) => {
+        let newProject = new Project(name);
+        projects.push(newProject);
+    });
+})();
+
+export default listLogic;

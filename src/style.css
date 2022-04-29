@@ -137,6 +137,7 @@ button:active {
     border: none;
     outline: 1px solid black;
     font-size: 1rem;
+    background-color: var(--lightgray);
 }
 
 .header h2 {
