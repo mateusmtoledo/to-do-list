@@ -1,7 +1,9 @@
 :root {
     font-size: 16px;
     --darkblue: #164e63;
-    --lightblue: #f4f4f4;
+    --blue: #06b6d4;
+    --lightgray: #f6f6f6;
+    --gray: #d4d4d4;
 }
 
 * {
@@ -10,7 +12,7 @@
 }
 
 body {
-    background-color: var(--lightblue);
+    background-color: var(--lightgray);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -40,8 +42,83 @@ main {
 
 .content {
     background-color: white;
-    padding: 8px;
-    width: 800px;
+    padding: 16px 32px;
+    width: 700px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     flex: 1;
+}
+
+ul {
+    list-style-type: none;
+}
+
+h2, h3 {
+    font-weight: 300;
+}
+
+.task > * {
+    font-size: 1rem;
+}
+
+h4 {
+    font-size: 0.8rem;
+}
+
+.projects .header {
+    display: flex;
+    justify-content: space-between;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 8px 16px;
+    background-color: var(--blue);
+    color: white;
+}
+
+.header .buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.task-list > * {
+    padding: 8px 16px;
+    display: grid;
+    grid-template-columns: 1fr repeat(3, 80px);
+    gap: 32px;
+    justify-items: center;
+}
+
+.task-list > li > *:first-child {
+    justify-self: left;
+}
+
+.task-list {
+    margin: 0 12px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+button {
+    padding: 4px 12px;
+    font-size: 0.8rem;
+    border-radius: 12px;
+    border: none;
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+button:active {
+    position: relative;
+    left: 1px;
+    top: 1px;
+    box-shadow: none;
+}
+
+.new-project-button {
+    margin: 16px;
+    padding: 6px 16px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
 }
