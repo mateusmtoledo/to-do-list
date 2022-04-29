@@ -65,13 +65,17 @@ h4 {
 }
 
 .projects .header {
+    font-size: 1rem;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
     border-radius: 8px;
     padding: 8px 16px;
     background-color: var(--blue);
     color: white;
+    height: 44px;
+    box-sizing: border-box;
 }
 
 .header .buttons {
@@ -118,7 +122,23 @@ button:active {
     padding: 6px 16px;
 }
 
+.project {
+    margin-bottom: 16px;
+}
+
 .button-container {
     display: flex;
     justify-content: flex-end;
+}
+
+.header input {
+    padding: 4px 8px;
+    border-radius: 32px;
+    border: none;
+    outline: 1px solid black;
+    font-size: 1rem;
+}
+
+.header h2 {
+    font-size: 1.3rem;
 }
