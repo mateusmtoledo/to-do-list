@@ -155,15 +155,58 @@ button:active {
     background-color: #3e3e3e8a;
 }
 
-.filler > div {
+.confirmation {
     background-color: white;
     padding: 64px 32px;
     border-radius: 16px;
 }
 
-.filler > div > div {
+.confirmation > div {
     display: flex;
     justify-content: flex-end;
     gap: 16px;
     margin-top: 16px;
+}
+
+.new-task-container {
+    width: 350px;
+    background-color: white;
+    padding: 32px;
+    border-radius: 16px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 5fr 1fr;
+    gap: 8px;
+}
+
+.new-task-container > p {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.7rem;
+}
+
+.new-task-container > h5 {
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+#name-field,
+.new-task-container > h5 {
+    grid-column: 1 / -1;
+}
+
+#description-field {
+    grid-column: 1 / -1;
+}
+
+#description-input {
+    height: 100%;
+}
+
+.new-task-container > div {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 16px;
 }

@@ -156,10 +156,83 @@ const domStuff = (function() {
             });
         })();
     }
+    function newTaskForm(projectName) {
+        const fillerDiv = document.createElement('div');
+        fillerDiv.classList.add('filler');
+        const containerDiv = document.createElement('div');
+        containerDiv.classList.add('new-task-container');
+        const h5 = document.createElement('h5');
+        h5.textContent = `Add new task to "${projectName}"`;
+
+        // Name
+        const name = document.createElement('p');
+        name.id = 'name-field';
+        const nameLabel = document.createElement('label');
+        nameLabel.setAttribute('for', 'name-input');
+        nameLabel.textContent = 'Task name';
+        const nameInput = document.createElement('input');
+        nameInput.setAttribute('type', 'text');
+        nameInput.id = 'name-input';
+        name.append(nameLabel,nameInput);
+
+        // Priority
+        const priority = document.createElement('p');
+        const priorityLabel = document.createElement('label');
+        priorityLabel.setAttribute('for', 'priority-input');
+        priorityLabel.textContent = 'Priority';
+        const priorityInput = document.createElement('select');
+        priorityInput.id = 'priority-input';
+        const highPriority = document.createElement('option');
+        highPriority.textContent = 'High';
+        highPriority.setAttribute('value', 'High');
+        const mediumPriority = document.createElement('option');
+        mediumPriority.textContent = 'Medium';
+        mediumPriority.setAttribute('value', 'Medium');
+        const lowPriority = document.createElement('option');
+        lowPriority.textContent = 'Low';
+        lowPriority.setAttribute('value', 'Low');
+        priorityInput.append(highPriority, mediumPriority, lowPriority);
+        priority.append(priorityLabel, priorityInput);
+
+        // Due date
+        const date = document.createElement('p');
+        const dateLabel = document.createElement('label');
+        dateLabel.setAttribute('for', 'date-input');
+        dateLabel.textContent = 'Due date';
+        const dateInput = document.createElement('input');
+        dateInput.setAttribute('type', 'date');
+        dateInput.id = 'date-input';
+        date.append(dateLabel, dateInput);
+
+        // Description
+        const description = document.createElement('p');
+        description.id = 'description-field';
+        const descriptionLabel = document.createElement('label');
+        descriptionLabel.setAttribute('for', 'description-input');
+        descriptionLabel.textContent = 'Description';
+        const descriptionInput = document.createElement('textarea');
+        descriptionInput.id = 'description-input';
+        description.append(descriptionLabel, descriptionInput);
+
+        // Buttons
+        const buttonsDiv = document.createElement('div');
+        const cancelButton = document.createElement('button');
+        cancelButton.setAttribute('type', 'button');
+        cancelButton.textContent = 'Cancel';
+        const confirmButton = document.createElement('button');
+        confirmButton.setAttribute('type', 'button');
+        confirmButton.textContent = 'Confirm';
+        buttonsDiv.append(cancelButton, confirmButton);
+
+        containerDiv.append(h5, name, priority, date, description, buttonsDiv);
+        fillerDiv.append(containerDiv);
+        return fillerDiv;
+    }
     function deleteProjectConfirmation(projectName, projectIndex) {
         const fillerDiv = document.createElement('div');
         fillerDiv.classList.add('filler');
         const confirmationDiv = document.createElement('div');
+        confirmationDiv.classList.add('confirmation');
         const confirmationMsg = document.createElement('p');
         confirmationMsg.textContent = `Are you sure you want to delete "${projectName}"?`;
         const buttonsDiv = document.createElement('div');
@@ -198,14 +271,34 @@ const domStuff = (function() {
         del.setAttribute('type', 'button');
         buttons.append(newTask, del);
         header.append(title, buttons);
-        project.append(header);
-        projectsDiv.append(project);
-        newTask.addEventListener('click', () => {
+        
+        // Task List
+        const taskList = document.createElement('ul');
+        taskList.classList.add('task-list');
 
+        // Legend
+        const legend = document.createElement('li');
+        legend.classList.add('legend');
+        const legendName = document.createElement('h4');
+        legendName.textContent = 'Task name';
+        const legendPriority = document.createElement('h4');
+        legendPriority.textContent = 'Priority';
+        const legendCompleted = document.createElement('h4');
+        legendCompleted.textContent = 'Completed';
+        const legendDueDate = document.createElement('h4');
+        legendDueDate.textContent = 'Due date';
+        legend.append(legendName, legendPriority, legendCompleted, legendDueDate);
+        taskList.append(legend);
+
+        newTask.addEventListener('click', () => {
+            document.body.append(newTaskForm(title.textContent));
         })
         del.addEventListener('click', () => {
             document.body.append(deleteProjectConfirmation(title.textContent, projects.indexOf(project)));
         })
+
+        project.append(header, taskList);
+        projectsDiv.append(project);
     }
     pubSub.subscribe('projectAdded', (name) => addProject(name));
     pubSub.subscribe('projectRemoved', (index) => {
