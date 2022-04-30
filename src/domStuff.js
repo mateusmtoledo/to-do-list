@@ -156,10 +156,34 @@ const domStuff = (function() {
             });
         })();
     }
+    function deleteProjectConfirmation(projectName, projectIndex) {
+        const fillerDiv = document.createElement('div');
+        fillerDiv.classList.add('filler');
+        const confirmationDiv = document.createElement('div');
+        const confirmationMsg = document.createElement('p');
+        confirmationMsg.textContent = `Are you sure you want to delete "${projectName}"?`;
+        const buttonsDiv = document.createElement('div');
+        const confirmButton = document.createElement('button');
+        confirmButton.setAttribute('type', 'button');
+        confirmButton.textContent = 'Delete';
+        const cancelButton = document.createElement('button');
+        cancelButton.textContent = 'Cancel';
+        buttonsDiv.append(cancelButton, confirmButton);
+        confirmationDiv.append(confirmationMsg, buttonsDiv);
+        fillerDiv.append(confirmationDiv);
+        cancelButton.addEventListener('click', () => {
+            fillerDiv.remove();
+        });
+        confirmButton.addEventListener('click', () => {
+            pubSub.publish('projectRemoved', projectIndex);
+            fillerDiv.remove();
+        })
+        return fillerDiv;
+    }
     function addProject(name) {
-        let index = projects.length;
-        projects[index] = document.createElement('li');
-        projects[index].classList.add('project');
+        const project = document.createElement('li');
+        projects.push(project);
+        project.classList.add('project');
         const header = document.createElement('div');
         header.classList.add('header');
         const title = document.createElement('h2');
@@ -174,10 +198,20 @@ const domStuff = (function() {
         del.setAttribute('type', 'button');
         buttons.append(newTask, del);
         header.append(title, buttons);
-        projects[index].append(header);
-        projectsDiv.append(projects[index]);
+        project.append(header);
+        projectsDiv.append(project);
+        newTask.addEventListener('click', () => {
+
+        })
+        del.addEventListener('click', () => {
+            document.body.append(deleteProjectConfirmation(title.textContent, projects.indexOf(project)));
+        })
     }
     pubSub.subscribe('projectAdded', (name) => addProject(name));
+    pubSub.subscribe('projectRemoved', (index) => {
+        projects[index].remove();
+        projects.splice(index, 1);
+    });
     newProjectButton.addEventListener('click', addBlankProject);
 })();
 

@@ -143,3 +143,27 @@ button:active {
 .header h2 {
     font-size: 1.3rem;
 }
+
+.filler {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    background-color: #3e3e3e8a;
+}
+
+.filler > div {
+    background-color: white;
+    padding: 64px 32px;
+    border-radius: 16px;
+}
+
+.filler > div > div {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 16px;
+}

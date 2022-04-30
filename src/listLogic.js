@@ -30,6 +30,9 @@ const listLogic = (function () {
         let newProject = new Project(name);
         projects.push(newProject);
     });
+    pubSub.subscribe('projectRemoved', (index) => {
+        projects.splice(index, 1);
+    });
 })();
 
 export default listLogic;
