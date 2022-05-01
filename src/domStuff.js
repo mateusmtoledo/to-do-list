@@ -156,7 +156,7 @@ const domStuff = (function() {
             });
         })();
     }
-    function newTaskForm(projectName) {
+    function newTaskForm(projectName, projectIndex) {
         const fillerDiv = document.createElement('div');
         fillerDiv.classList.add('filler');
         const containerDiv = document.createElement('div');
@@ -226,7 +226,38 @@ const domStuff = (function() {
 
         containerDiv.append(h5, name, priority, date, description, buttonsDiv);
         fillerDiv.append(containerDiv);
+
+        cancelButton.addEventListener('click', () => {
+            fillerDiv.remove();
+        });
+        confirmButton.addEventListener('click', () => {
+            const task = {
+                projectIndex: projectIndex,
+                name: nameInput.value,
+                priority: priorityInput.value,
+                date: dateInput.value,
+                description: descriptionInput.value
+            };
+            pubSub.publish('taskAdded', task);
+            fillerDiv.remove();
+        });
         return fillerDiv;
+    }
+    function newTask(taskInfo) {
+        const task = document.createElement('li');
+        task.classList.add('task');
+        const title = document.createElement('h3');
+        title.textContent = taskInfo.name;
+    
+        const priority = document.createElement('p');
+        priority.textContent = taskInfo.priority;
+        const completed = document.createElement('p');
+        completed.textContent = 'N';
+        const due = document.createElement('p');
+        due.textContent = taskInfo.date;
+
+        task.append(title, priority, completed, due);
+        return task;
     }
     function deleteProjectConfirmation(projectName, projectIndex) {
         const fillerDiv = document.createElement('div');
@@ -255,6 +286,7 @@ const domStuff = (function() {
     }
     function addProject(name) {
         const project = document.createElement('li');
+        project.setAttribute('data-hidden', '0');
         projects.push(project);
         project.classList.add('project');
         const header = document.createElement('div');
@@ -290,20 +322,36 @@ const domStuff = (function() {
         legend.append(legendName, legendPriority, legendCompleted, legendDueDate);
         taskList.append(legend);
 
-        newTask.addEventListener('click', () => {
-            document.body.append(newTaskForm(title.textContent));
-        })
-        del.addEventListener('click', () => {
+        project.addEventListener('click', () => {
+            if(project.getAttribute('data-hidden') == '1') {
+                project.append(taskList);
+                project.setAttribute('data-hidden', '0');
+            }
+            else {
+                project.removeChild(taskList);
+                project.setAttribute('data-hidden', '1');
+            }
+        });
+        newTask.addEventListener('click', (e) => {
+            e.stopPropagation();
+            document.body.append(newTaskForm(title.textContent, projects.indexOf(project)));
+        });
+        del.addEventListener('click', (e) => {
+            e.stopPropagation();
             document.body.append(deleteProjectConfirmation(title.textContent, projects.indexOf(project)));
-        })
-
+        });
         project.append(header, taskList);
         projectsDiv.append(project);
     }
+
     pubSub.subscribe('projectAdded', (name) => addProject(name));
     pubSub.subscribe('projectRemoved', (index) => {
         projects[index].remove();
         projects.splice(index, 1);
+    });
+    pubSub.subscribe('taskAdded', (taskInfo) => {
+        const taskList = projects[taskInfo.projectIndex].querySelector('.task-list');
+        taskList.append(newTask(taskInfo));
     });
     newProjectButton.addEventListener('click', addBlankProject);
 })();
