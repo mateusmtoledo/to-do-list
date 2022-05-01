@@ -19,7 +19,7 @@ const page = (function() {
         main.append(content);
         const ul = document.createElement('ul');
         ul.classList.add('projects');
-        
+
         // New Project Button
         const newProjectButtonContainer = document.createElement('div');
         newProjectButtonContainer.classList.add('button-container');
@@ -251,7 +251,7 @@ const domStuff = (function() {
         legend.append(legendName, legendPriority, legendCompleted, legendDueDate);
         taskList.append(legend);
 
-        project.addEventListener('click', () => {
+        header.addEventListener('click', () => {
             if(project.getAttribute('data-hidden') == '1') {
                 project.append(taskList);
                 project.setAttribute('data-hidden', '0');
